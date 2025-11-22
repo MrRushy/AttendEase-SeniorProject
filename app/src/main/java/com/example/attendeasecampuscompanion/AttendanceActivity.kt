@@ -39,8 +39,10 @@ class AttendanceActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     val currentDate: LocalDate = LocalDate.now()
+
     @RequiresApi(Build.VERSION_CODES.O)
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
     @RequiresApi(Build.VERSION_CODES.O)
     val formattedDate: String = currentDate.format(formatter)
 
@@ -65,7 +67,7 @@ class AttendanceActivity : AppCompatActivity() {
             title = getString(R.string.app_name) + " • Attendance"
         }
 
-        textView = findViewById(R.id.textView)
+        // textView = findViewById(R.id.textView)
 
         // Firestore Initialized
         db = FirebaseFirestore.getInstance()
@@ -157,7 +159,10 @@ class AttendanceActivity : AppCompatActivity() {
             val aidBytes = hexStringToByteArray(AID)
 
             // Build SELECT APDU command
-            val selectApdu = SELECT_APDU_HEADER + byteArrayOf(aidBytes.size.toByte()) + aidBytes + byteArrayOf(0x00.toByte())
+            val selectApdu =
+                SELECT_APDU_HEADER + byteArrayOf(aidBytes.size.toByte()) + aidBytes + byteArrayOf(
+                    0x00.toByte()
+                )
 
             // Send SELECT command
             val response = isoDep.transceive(selectApdu)
@@ -173,7 +178,8 @@ class AttendanceActivity : AppCompatActivity() {
 
                     runOnUiThread {
                         textView.text = "Received Data:\n$receivedData"
-                        Toast.makeText(this, "Data received successfully!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Data received successfully!", Toast.LENGTH_SHORT)
+                            .show()
                     }
 
                     sendToFirebase(receivedData)
@@ -201,7 +207,10 @@ class AttendanceActivity : AppCompatActivity() {
         val data = ByteArray(len / 2)
         var i = 0
         while (i < len) {
-            data[i / 2] = ((Character.digit(hexString[i], 16) shl 4) + Character.digit(hexString[i + 1], 16)).toByte()
+            data[i / 2] = ((Character.digit(hexString[i], 16) shl 4) + Character.digit(
+                hexString[i + 1],
+                16
+            )).toByte()
             i += 2
         }
         return data
@@ -259,7 +268,8 @@ class AttendanceActivity : AppCompatActivity() {
 
         for (record in message.records) {
             if (record.tnf == android.nfc.NdefRecord.TNF_WELL_KNOWN &&
-                record.type.contentEquals(android.nfc.NdefRecord.RTD_TEXT)) {
+                record.type.contentEquals(android.nfc.NdefRecord.RTD_TEXT)
+            ) {
 
                 val payload = record.payload
 
@@ -273,8 +283,7 @@ class AttendanceActivity : AppCompatActivity() {
                 )
 
                 sb.append(text).append("\n")
-            }
-            else if (record.tnf == android.nfc.NdefRecord.TNF_MIME_MEDIA) {
+            } else if (record.tnf == android.nfc.NdefRecord.TNF_MIME_MEDIA) {
                 try {
                     val text = String(record.payload, StandardCharsets.UTF_8)
                     sb.append(text).append("\n")
@@ -283,8 +292,7 @@ class AttendanceActivity : AppCompatActivity() {
                     sb.append(payload).append("\n")
                 }
 
-            }
-            else {
+            } else {
                 val payload = String(record.payload, charset("UTF-8"))
                 sb.append(payload).append("\n")
             }
@@ -528,7 +536,12 @@ class AttendanceActivity : AppCompatActivity() {
                         val startTime = scheduleMap["startTime"]
                         val endTime = scheduleMap["endTime"]
                         //Toast.makeText(this, "startTime: $startTime endTime: $endTime", Toast.LENGTH_SHORT).show()
-                        if (isCurrentTimeBetween(timeToLocalTime(time), timeToLocalTime(startTime.toString()), timeToLocalTime(endTime.toString()))) {
+                        if (isCurrentTimeBetween(
+                                timeToLocalTime(time),
+                                timeToLocalTime(startTime.toString()),
+                                timeToLocalTime(endTime.toString())
+                            )
+                        ) {
                             courseId = document.get("courseId").toString()
                             //Toast.makeText(this, "Current Event: $courseId", Toast.LENGTH_SHORT).show()
                         }
@@ -566,7 +579,8 @@ class AttendanceActivity : AppCompatActivity() {
                                     timeToLocalTime(time),
                                     timeToLocalTime(startTime.toString()),
                                     timeToLocalTime(endTime.toString())
-                                )) {
+                                )
+                            ) {
                                 courseId = document.get("courseId").toString()
                                 return@forEach // Exit loop when found
                             }
@@ -602,7 +616,11 @@ class AttendanceActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun isCurrentTimeBetween(currentTime: LocalTime, startTime: LocalTime, endTime: LocalTime): Boolean {
+    fun isCurrentTimeBetween(
+        currentTime: LocalTime,
+        startTime: LocalTime,
+        endTime: LocalTime
+    ): Boolean {
         return if (startTime.isBefore(endTime)) {
             (currentTime.isAfter(startTime) || currentTime == startTime) &&
                     (currentTime.isBefore(endTime) || currentTime == endTime)
@@ -632,7 +650,11 @@ class AttendanceActivity : AppCompatActivity() {
 
                         if (enrolledStudents?.contains(currentUserId) == true) {
                             isEnrolled = true
-                            Toast.makeText(this, "You are enrolled in: $currentEvent", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this,
+                                "You are enrolled in: $currentEvent",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             break
                         }
                     }
@@ -651,7 +673,7 @@ class AttendanceActivity : AppCompatActivity() {
             .document(currentUserId)
             .get()
             .addOnSuccessListener { document ->
-                if(document.exists()) {
+                if (document.exists()) {
                     val firstName = document.getString("firstName") ?: ""
                     val lastName = document.getString("lastName") ?: ""
                     val fullName = "$firstName $lastName"
@@ -666,7 +688,4 @@ class AttendanceActivity : AppCompatActivity() {
                 onResult("")
             }
     }
-
-
-
 }

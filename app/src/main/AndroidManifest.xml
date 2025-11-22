@@ -115,6 +115,26 @@
             android:exported="false" />
 
         <activity
+            android:name=".SocialActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".CommentsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".FriendsListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".FriendRequestsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".NotificationsActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".AttendanceSenderActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar">

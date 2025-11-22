@@ -143,6 +143,21 @@
             android:name="com.example.attendeasecampuscompanion.ViewAnnouncementsActivity"
             android:exported="false" />
         <activity
+            android:name="com.example.attendeasecampuscompanion.SocialActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.attendeasecampuscompanion.CommentsActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.attendeasecampuscompanion.FriendsListActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.attendeasecampuscompanion.FriendRequestsActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.attendeasecampuscompanion.NotificationsActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.attendeasecampuscompanion.AttendanceSenderActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" >
@@ -210,6 +225,21 @@
                 android:value="com.google.firebase.components.ComponentRegistrar" />
             <meta-data
                 android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar" />
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.storage.ktx.FirebaseStorageLegacyRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar" />
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.storage.FirebaseStorageKtxRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar" />
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.storage.StorageRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar" />
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckKtxRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar" />
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckRegistrar"
                 android:value="com.google.firebase.components.ComponentRegistrar" />
             <meta-data
                 android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"

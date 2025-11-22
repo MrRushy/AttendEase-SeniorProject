@@ -53,7 +53,7 @@ class AttendanceSenderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attendance_sender)
 
-        editText = findViewById(R.id.editText)
+        // editText = findViewById(R.id.editText)
         statusText = findViewById(R.id.statusText)
         val setButton: Button = findViewById(R.id.sendButton)
         roomSpinner = findViewById(R.id.roomSpinner)
@@ -171,8 +171,8 @@ class AttendanceSenderActivity : AppCompatActivity() {
     }
 
 
-        @RequiresApi(Build.VERSION_CODES.O)
-        override fun onNewIntent(intent: Intent) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
         handleNfcIntent(intent)
