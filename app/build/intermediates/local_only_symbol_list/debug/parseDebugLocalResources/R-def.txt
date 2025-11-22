@@ -108,9 +108,10 @@ id emptyText
 id enrollmentDetails
 id etEventDate
 id etEventDescription
+id etEventEndTime
 id etEventLocation
 id etEventName
-id etEventTime
+id etEventStartTime
 id etMessage
 id fabCreateEvent
 id fabRecenter

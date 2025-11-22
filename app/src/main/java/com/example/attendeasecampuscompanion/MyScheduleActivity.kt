@@ -195,6 +195,10 @@ class MyScheduleActivity : AppCompatActivity() {
             }
         }
 
+        fun stripSeconds(time: String): String {
+            return time.replace(":00", "")
+        }
+
         for (course in allCourses) {
             if (isDateInRange(course.semesterStart, course.semesterEnd, selectedDateStr)) {
                 for (scheduleMap in course.schedule) {
@@ -202,8 +206,8 @@ class MyScheduleActivity : AppCompatActivity() {
                         scheduleItems.add(ScheduleItem(
                             title = course.courseName,
                             subtitle = course.courseId,
-                            startTime = scheduleMap["startTime"] ?: "",
-                            endTime = scheduleMap["endTime"] ?: "",
+                            startTime = stripSeconds(scheduleMap["startTime"] ?: ""),
+                            endTime = stripSeconds(scheduleMap["endTime"] ?: ""),
                             building = scheduleMap["building"] ?: "",
                             room = scheduleMap["room"] ?: ""
                         ))
@@ -217,8 +221,8 @@ class MyScheduleActivity : AppCompatActivity() {
                 scheduleItems.add(ScheduleItem(
                     title = "Final Exam: ${finalExam.courseName}",
                     subtitle = finalExam.courseId,
-                    startTime = finalExam.startTime,
-                    endTime = finalExam.endTime,
+                    startTime = stripSeconds(finalExam.startTime),
+                    endTime = stripSeconds(finalExam.endTime),
                     building = finalExam.buildingId,
                     room = finalExam.roomId,
                     isFinalExam = true
@@ -246,8 +250,8 @@ class MyScheduleActivity : AppCompatActivity() {
                     scheduleItems.add(ScheduleItem(
                         title = event.description,
                         subtitle = "Event by ${event.creator}",
-                        startTime = scheduleItem.startTime,
-                        endTime = scheduleItem.endTime,
+                        startTime = stripSeconds(scheduleItem.startTime),
+                        endTime = stripSeconds(scheduleItem.endTime),
                         building = buildingDisplay,
                         room = roomDisplay,
                         isEvent = true
@@ -274,7 +278,8 @@ class MyScheduleActivity : AppCompatActivity() {
         val eventNameInput = dialogView.findViewById<EditText>(R.id.etEventName)
         val eventLocationInput = dialogView.findViewById<EditText>(R.id.etEventLocation)
         val eventDateInput = dialogView.findViewById<EditText>(R.id.etEventDate)
-        val eventTimeInput = dialogView.findViewById<EditText>(R.id.etEventTime)
+        val eventStartTimeInput = dialogView.findViewById<EditText>(R.id.etEventStartTime)
+        val eventEndTimeInput = dialogView.findViewById<EditText>(R.id.etEventEndTime)
         val eventDescriptionInput = dialogView.findViewById<EditText>(R.id.etEventDescription)
         val courseSpinner = dialogView.findViewById<Spinner>(R.id.spinnerEventCourse)
 
@@ -282,7 +287,8 @@ class MyScheduleActivity : AppCompatActivity() {
 
         val calendar = Calendar.getInstance()
         var selectedDateStr = ""
-        var selectedTime = ""
+        var selectedStartTime = ""
+        var selectedEndTime = ""
 
         eventDateInput.setOnClickListener {
             DatePickerDialog(
@@ -297,14 +303,29 @@ class MyScheduleActivity : AppCompatActivity() {
             ).show()
         }
 
-        eventTimeInput.setOnClickListener {
+        eventStartTimeInput.setOnClickListener {
             TimePickerDialog(
                 this,
                 { _, hour, minute ->
                     val amPm = if (hour >= 12) "PM" else "AM"
                     val displayHour = if (hour > 12) hour - 12 else if (hour == 0) 12 else hour
-                    selectedTime = String.format("%d:%02d %s", displayHour, minute, amPm)
-                    eventTimeInput.setText(selectedTime)
+                    selectedStartTime = String.format("%d:%02d %s", displayHour, minute, amPm)
+                    eventStartTimeInput.setText(selectedStartTime)
+                },
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                false
+            ).show()
+        }
+
+        eventEndTimeInput.setOnClickListener {
+            TimePickerDialog(
+                this,
+                { _, hour, minute ->
+                    val amPm = if (hour >= 12) "PM" else "AM"
+                    val displayHour = if (hour > 12) hour - 12 else if (hour == 0) 12 else hour
+                    selectedEndTime = String.format("%d:%02d %s", displayHour, minute, amPm)
+                    eventEndTimeInput.setText(selectedEndTime)
                 },
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
@@ -320,14 +341,15 @@ class MyScheduleActivity : AppCompatActivity() {
                 val location = eventLocationInput.text.toString()
                 val description = eventDescriptionInput.text.toString()
                 val date = selectedDateStr
-                val time = selectedTime
+                val startTime = selectedStartTime
+                val endTime = selectedEndTime
                 val selectedCourseItem = courseSpinner.selectedItem as? CourseSpinnerItem
                 val courseId = selectedCourseItem?.courseId ?: ""
 
-                if (name.isNotBlank() && date.isNotBlank() && time.isNotBlank()) {
-                    saveEventToFirebase(name, description, location, date, time, courseId)
+                if (name.isNotBlank() && date.isNotBlank() && startTime.isNotBlank() && endTime.isNotBlank()) {
+                    saveEventToFirebase(name, description, location, date, startTime, endTime, courseId)
                 } else {
-                    Toast.makeText(this, "Please fill required fields", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -356,7 +378,8 @@ class MyScheduleActivity : AppCompatActivity() {
         description: String,
         location: String,
         date: String,
-        time: String,
+        startTime: String,
+        endTime: String,
         courseId: String
     ) {
         val userId = auth.currentUser?.uid ?: return
@@ -387,10 +410,10 @@ class MyScheduleActivity : AppCompatActivity() {
                             "coordinates" to "",
                             "date" to date,
                             "dayOfWeek" to "",
-                            "endTime" to "",
+                            "endTime" to endTime,
                             "recurring" to false,
                             "room" to "",
-                            "startTime" to time
+                            "startTime" to startTime
                         )
                     )
                 )

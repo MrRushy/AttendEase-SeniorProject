@@ -3488,9 +3488,10 @@ int id enterAlwaysCollapsed 0x7f080107
 int id escape 0x7f080108
 int id etEventDate 0x7f080109
 int id etEventDescription 0x7f08010a
+int id etEventEndTime 0x7f0802ef
 int id etEventLocation 0x7f08010b
 int id etEventName 0x7f08010c
-int id etEventTime 0x7f08010d
+int id etEventStartTime 0x7f0802f0
 int id etMessage 0x7f08010e
 int id exitUntilCollapsed 0x7f08010f
 int id expand_activities_button 0x7f080110
