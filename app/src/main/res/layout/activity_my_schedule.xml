@@ -208,7 +208,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <!-- Headers -->
                         <LinearLayout
                             android:id="@+id/dayHeadersContainer"
                             android:layout_width="wrap_content"
@@ -218,7 +217,6 @@
                             android:gravity="center_vertical"
                             android:background="#E0E0E0"/>
 
-                        <!-- Grid -->
                         <LinearLayout
                             android:id="@+id/weekColumnsContainer"
                             android:layout_width="wrap_content"
