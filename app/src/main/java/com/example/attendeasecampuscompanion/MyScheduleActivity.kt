@@ -659,7 +659,8 @@ class MyScheduleActivity : AppCompatActivity() {
         val eventNameInput = dialogView.findViewById<EditText>(R.id.etEventName)
         val eventLocationInput = dialogView.findViewById<EditText>(R.id.etEventLocation)
         val eventDateInput = dialogView.findViewById<EditText>(R.id.etEventDate)
-        val eventTimeInput = dialogView.findViewById<EditText>(R.id.etEventTime)
+        val eventStartTimeInput = dialogView.findViewById<EditText>(R.id.etEventStartTime)
+        val eventEndTimeInput = dialogView.findViewById<EditText>(R.id.etEventEndTime)
         val eventDescriptionInput = dialogView.findViewById<EditText>(R.id.etEventDescription)
         val courseSpinner = dialogView.findViewById<Spinner>(R.id.spinnerEventCourse)
 
@@ -682,14 +683,29 @@ class MyScheduleActivity : AppCompatActivity() {
             ).show()
         }
 
-        eventTimeInput.setOnClickListener {
+        eventStartTimeInput.setOnClickListener {
             TimePickerDialog(
                 this,
                 { _, hour, minute ->
                     val amPm = if (hour >= 12) "PM" else "AM"
                     val displayHour = if (hour > 12) hour - 12 else if (hour == 0) 12 else hour
                     selectedTime = String.format("%d:%02d %s", displayHour, minute, amPm)
-                    eventTimeInput.setText(selectedTime)
+                    eventStartTimeInput.setText(selectedTime)
+                },
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                false
+            ).show()
+        }
+
+        eventEndTimeInput.setOnClickListener {
+            TimePickerDialog(
+                this,
+                { _, hour, minute ->
+                    val amPm = if (hour >= 12) "PM" else "AM"
+                    val displayHour = if (hour > 12) hour - 12 else if (hour == 0) 12 else hour
+                    selectedTime = String.format("%d:%02d %s", displayHour, minute, amPm)
+                    eventEndTimeInput.setText(selectedTime)
                 },
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),

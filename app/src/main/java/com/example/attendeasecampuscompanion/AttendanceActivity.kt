@@ -10,6 +10,7 @@ import android.nfc.tech.IsoDep
 import android.nfc.tech.Ndef
 import android.os.Build
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -32,7 +33,10 @@ class AttendanceActivity : AppCompatActivity() {
 //    private var nfcTagData: String = ""
 
     private var receivedData: String = ""
-    private lateinit var textView: TextView
+    private lateinit var statusText: TextView
+    private lateinit var statusDescription: TextView
+    private lateinit var btnBack: TextView
+    private lateinit var timeSet: EditText
     private lateinit var db: FirebaseFirestore
     private var currentRoom: String = "235"
     private var time: String = "11:45:00 AM"
@@ -61,13 +65,12 @@ class AttendanceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attendance)
 
-        // Optional: show a back arrow in the top bar
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            title = getString(R.string.app_name) + " • Attendance"
-        }
 
-        // textView = findViewById(R.id.textView)
+        statusText = findViewById(R.id.statusText)
+        statusDescription = findViewById(R.id.statusDescription)
+
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener { finish() }
 
         // Firestore Initialized
         db = FirebaseFirestore.getInstance()
@@ -76,16 +79,19 @@ class AttendanceActivity : AppCompatActivity() {
 
         if (nfcAdapter == null) {
             Toast.makeText(this, "This device is not NFC-capable", Toast.LENGTH_LONG).show()
-            textView.text = "NFC is not available on this device"
+            statusText.text = "Unable to scan"
+            statusDescription.text = "This device is not NFC-capapble"
             finish()
             return
         }
 
         if (!nfcAdapter!!.isEnabled) {
-            textView.text = "NFC is disabled. Please enable it in the settings."
+            statusText.text = "Unable to scan"
+            statusDescription.text = "NFC is disabled. Please enable it in the settings."
             Toast.makeText(this, "Please enable NFC", Toast.LENGTH_SHORT).show()
         } else {
-            textView.text = "NFC is enabled, ready to scan"
+            statusText.text = "Ready to scan"
+            statusDescription.text = "Bring your device close to the in-class scanner"
         }
 //
 //        pendingIntent = PendingIntent.getActivity(
@@ -130,7 +136,7 @@ class AttendanceActivity : AppCompatActivity() {
             null
         )
 
-        runOnUiThread { textView.text = "Scanning for HCE device..." }
+
     }
 
     override fun onPause() {
@@ -177,15 +183,16 @@ class AttendanceActivity : AppCompatActivity() {
                     receivedData = String(dataBytes, StandardCharsets.UTF_8)
 
                     runOnUiThread {
-                        textView.text = "Received Data:\n$receivedData"
-                        Toast.makeText(this, "Data received successfully!", Toast.LENGTH_SHORT)
-                            .show()
+                        statusText.text = "Received Data"
+                        statusDescription.text = "Received Data:\n$receivedData"
+                        Toast.makeText(this, "Data received successfully!", Toast.LENGTH_SHORT).show()
                     }
 
                     sendToFirebase(receivedData)
                 } else {
                     runOnUiThread {
-                        textView.text = "Failed to read data (status code error)"
+                        statusText.text = "Failed to read data"
+                        statusDescription.text = "Communication error"
                         Toast.makeText(this, "Communication error", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -195,7 +202,9 @@ class AttendanceActivity : AppCompatActivity() {
 
         } catch (e: Exception) {
             runOnUiThread {
-                textView.text = "Error: ${e.message}"
+                statusText.text = "Error"
+                statusDescription.text = "Error: ${e.message}"
+
                 Toast.makeText(this, "Error reading HCE: ${e.message}", Toast.LENGTH_LONG).show()
             }
             e.printStackTrace()

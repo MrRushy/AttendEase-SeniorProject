@@ -19,7 +19,7 @@ class HCEService : HostApduService() {
         private val STATUS_SUCCESS = byteArrayOf(0x90.toByte(), 0x00.toByte())
         private val STATUS_FAILED = byteArrayOf(0x6F.toByte(), 0x00.toByte())
 
-        var dataToSend: String = "Default Attendance ID: 1234567890"
+        var dataToSend: String = ""
     }
 
     @OptIn(ExperimentalStdlibApi::class)

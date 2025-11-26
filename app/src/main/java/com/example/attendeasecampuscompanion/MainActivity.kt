@@ -25,9 +25,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            checkUserRoleAndNavigate(currentUser.uid)
+        val skipAutoLogin = intent.getBooleanExtra("SKIP_AUTO_LOGIN", false)
+
+        if (!skipAutoLogin) {
+            val currentUser = auth.currentUser
+            if (currentUser != null) {
+                checkUserRoleAndNavigate(currentUser.uid)
+            }
         }
     }
 
@@ -116,18 +120,16 @@ class MainActivity : ComponentActivity() {
                     }
 
                     startActivity(intent)
-                    finish()
+
                 } else {
                     Toast.makeText(this, "User data not found", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, HomeActivity::class.java))
-                    finish()
                 }
             }
             .addOnFailureListener { e ->
                 android.util.Log.e("Firestore", "Error fetching user", e)
                 Toast.makeText(this, "Error checking user role", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, HomeActivity::class.java))
-                finish()
             }
     }
 

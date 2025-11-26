@@ -14,6 +14,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import android.app.PendingIntent
 import android.content.Intent
@@ -23,6 +24,7 @@ import android.nfc.Tag
 import android.nfc.tech.NfcA
 import android.nfc.tech.Ndef
 import android.os.Build
+import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import java.nio.charset.StandardCharsets
 import java.time.LocalTime
@@ -30,8 +32,13 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class AttendanceSenderActivity : AppCompatActivity() {
+    private lateinit var readerModeSection: LinearLayout
+    private lateinit var hceModeSection: LinearLayout
     private lateinit var editText: EditText
     private lateinit var statusText: TextView
+    private lateinit var btnBack: TextView
+    private lateinit var readerModeButton : Button
+    private lateinit var hceModeButton : Button
     private lateinit var roomSpinner: Spinner
     private var nfcAdapter: NfcAdapter? = null
     private var cardEmulation: CardEmulation? = null
@@ -47,16 +54,47 @@ class AttendanceSenderActivity : AppCompatActivity() {
     private var pendingIntent: PendingIntent? = null
     private var intentFiltersArray: Array<IntentFilter>? = null
 
+    private lateinit var auth: FirebaseAuth
+
     private var nfcTagData: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attendance_sender)
 
-        // editText = findViewById(R.id.editText)
+        editText = findViewById(R.id.timeSet)
         statusText = findViewById(R.id.statusText)
         val setButton: Button = findViewById(R.id.sendButton)
         roomSpinner = findViewById(R.id.roomSpinner)
+
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
+
+        readerModeSection = findViewById(R.id.readerModeSection)
+        hceModeSection = findViewById(R.id.hceModeSection)
+
+
+        readerModeButton = findViewById(R.id.readerModeButton)
+        readerModeButton.setOnClickListener {
+            readerModeSection.visibility = View.VISIBLE
+            hceModeSection.visibility = View.GONE
+
+        }
+
+        hceModeButton = findViewById(R.id.hceModeButton)
+        hceModeButton.setOnClickListener {
+            readerModeSection.visibility = View.GONE
+            hceModeSection.visibility = View.VISIBLE
+
+        }
+
+
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
@@ -131,6 +169,7 @@ class AttendanceSenderActivity : AppCompatActivity() {
         roomSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedRoom = rooms[position]
+                roomSpinner.setSelection(position)
                 statusText.text = "Ready to be scanned...\nRoom: $selectedRoom"
             }
 
@@ -142,6 +181,7 @@ class AttendanceSenderActivity : AppCompatActivity() {
         // Set initial selection
         if (rooms.isNotEmpty()) {
             selectedRoom = rooms[0]
+            roomSpinner.setSelection(0)
         }
     }
 
@@ -232,17 +272,6 @@ class AttendanceSenderActivity : AppCompatActivity() {
 
         }
 
-    }
-
-    // Helper function to convert byte array to hex string
-    private fun bytesToHex(bytes: ByteArray): String {
-        val hexChars = CharArray(bytes.size * 2)
-        for (i in bytes.indices) {
-            val v = bytes[i].toInt() and 0xFF
-            hexChars[i * 2] = "0123456789ABCDEF"[v ushr 4]
-            hexChars[i * 2 + 1] = "0123456789ABCDEF"[v and 0x0F]
-        }
-        return String(hexChars)
     }
 
 //    @RequiresApi(Build.VERSION_CODES.O)
