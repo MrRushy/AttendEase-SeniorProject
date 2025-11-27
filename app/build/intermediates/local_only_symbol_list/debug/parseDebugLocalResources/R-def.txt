@@ -19,6 +19,7 @@ drawable button_primary
 drawable button_red
 drawable card_background
 drawable circle_button_bg
+drawable day_column_bg
 drawable final_exam_border
 drawable gradient_header
 drawable ic_back
@@ -59,7 +60,9 @@ id btnModeCar
 id btnModeWalk
 id btnMySchedule
 id btnNavigate
+id btnNextDate
 id btnPresent
+id btnPrevDate
 id btnProfCampusMap
 id btnProfSignOut
 id btnSaveAttendance
@@ -95,6 +98,7 @@ id creditsDetails
 id currentModeText
 id dateHeader
 id dateText
+id dayHeadersContainer
 id declineButton
 id deletePostButton
 id departmentDetails
@@ -218,6 +222,7 @@ id studentId
 id studentName
 id suggestionsList
 id switchClassMarkers
+id timeColumn
 id timeRange
 id timeSet
 id topBar
@@ -255,6 +260,9 @@ id txtSubtitle
 id viewFriendsButton
 id viewPriorityIndicator
 id viewRequestsButton
+id viewToggle
+id weekColumnsContainer
+id weekViewContainer
 id welcomeTitle
 layout activity_attendance
 layout activity_attendance_sender
