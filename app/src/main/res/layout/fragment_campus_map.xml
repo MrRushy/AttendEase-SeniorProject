@@ -1,10 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- fragment_campus_map.xml -->
-<!-- TEAM: Root declares both android + app namespaces so we can use app:* attrs. -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!-- Animated blue header reused from home screen -->
+    <!-- Compact animated header that replaces the old toolbar -->
+    <FrameLayout
+        android:id="@+id/mapHeaderContainer"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <com.example.attendeasecampuscompanion.AnimatedHeaderView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- Content over the animated background -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp">
+
+            <!-- Back arrow -->
+            <ImageButton
+                android:id="@+id/mapBackButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:padding="8dp"
+                android:src="@drawable/ic_back"
+                 />
+
+            <!-- Centered title -->
+            <TextView
+                android:id="@+id/mapTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="NYIT LI Campus Map"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Map content area (map + search + overlays) -->
+    <FrameLayout
+        android:id="@+id/mapContentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
 
     <!-- Google Map -->
     <fragment
@@ -13,28 +64,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Search bar (top overlay) -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/searchLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:layout_gravity="top"
-        app:boxBackgroundMode="filled"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusBottomEnd="12dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/searchInput"
+        <!-- Search bar styled like home cards -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/searchCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search buildings"
-            android:imeOptions="actionSearch"
-            android:singleLine="true"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="12dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            android:backgroundTint="#FFFFFF"
+            app:strokeColor="#E0E0E0"
+            app:strokeWidth="1dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/searchLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundMode="filled"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Search buildings"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.card.MaterialCardView>
+
     <LinearLayout
         android:id="@+id/navNextTurnContainer"
         android:layout_width="match_parent"
@@ -82,170 +147,250 @@
         android:elevation="8dp"
         android:visibility="gone"/>
 
-    <!-- Recenter FAB (optional) -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabRecenter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/recenter_map"
-        app:srcCompat="@drawable/ic_my_location" />
-
-    <LinearLayout
-        android:id="@+id/classMarkersSwitchContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="16dp">
-
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/switchClassMarkers"
+    <!-- Recenter FAB  -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabRecenter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Show classes"
-            android:checked="true"
-            android:textColor="@android:color/black"
-            app:useMaterialThemeColors="true" />
-    </LinearLayout>
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/recenter_map"
+            app:backgroundTint="#66BB6A"
+            android:tint="@android:color/white"
+            app:srcCompat="@drawable/ic_my_location" />
 
 
-    <!-- TEAM NOTE (Rushil): Navigation info panel for basic "Phase 1" nav.
-     This sits on top of the map and stays hidden until a marker is selected. -->
-    <LinearLayout
-        android:id="@+id/navPanelContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp"
-        android:background="@android:color/white"
-        android:elevation="8dp"
-        android:visibility="gone"
-        android:layout_gravity="bottom">
-
-        <!-- Destination name -->
-        <TextView
-            android:id="@+id/navDestinationText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Destination: —"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:paddingBottom="4dp" />
-
-        <TextView
-            android:id="@+id/navClassInfoText"
+        <!-- "Show classes" switch styled as a pill card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/classMarkersSwitchContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text=""
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            android:visibility="gone" />
+            android:layout_gravity="bottom|start"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            android:backgroundTint="#FFFFFF"
+            app:strokeColor="#E0E0E0"
+            app:strokeWidth="1dp">
 
-
-
-
-        <!-- Distance + ETA row -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="4dp">
-
-            <TextView
-                android:id="@+id/navDistanceText"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Distance: —" />
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/navEtaText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="ETA: —" />
-        </LinearLayout>
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchClassMarkers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Show classes"
+                    android:checked="true"
+                    android:textColor="@android:color/black"
+                    app:useMaterialThemeColors="false"
+                    app:thumbTint="@color/show_classes_thumb"
+                    app:trackTint="@color/show_classes_track" />
 
-        <!-- Arrival time -->
-        <TextView
-            android:id="@+id/navArrivalTimeText"
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+     <!--This sits on top of the map and stays hidden until a marker is selected. -->
+        <!-- Navigation info panel styled as bottom card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/navPanelContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Arrival: —"
-            android:paddingBottom="8dp" />
-
-        <LinearLayout
-            android:id="@+id/navParkingContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="4dp"
-            android:gravity="center_vertical"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp"
+            android:backgroundTint="#FFFFFF"
+            app:strokeColor="#E0E0E0"
+            app:strokeWidth="1dp"
             android:visibility="gone">
 
-            <TextView
-                android:id="@+id/navParkingText"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Parking: —"
-                android:textSize="14sp" />
+                android:orientation="vertical"
+                android:padding="12dp">
 
-            <Button
-                android:id="@+id/navIParkedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="I parked"
-                android:layout_marginEnd="8dp" />
+                <!-- Destination name -->
+                <TextView
+                    android:id="@+id/navDestinationText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Destination: —"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:paddingBottom="4dp" />
 
-            <Button
-                android:id="@+id/navChangeParkingButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Change" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/navClassInfoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+                <!-- Distance + ETA row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:id="@+id/navDistanceText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Distance: —" />
+
+                    <TextView
+                        android:id="@+id/navEtaText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="ETA: —" />
+                </LinearLayout>
+
+                <!-- Arrival time -->
+                <TextView
+                    android:id="@+id/navArrivalTimeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Arrival: —"
+                    android:paddingBottom="8dp" />
+
+                <LinearLayout
+                    android:id="@+id/navParkingContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:gravity="center_vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/navParkingText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Parking: —"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/navIParkedButton"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="I PARKED"
+                        android:textAllCaps="true"
+                        android:textStyle="bold"
+                        app:strokeColor="#66BB6A"
+                        app:strokeWidth="2dp"
+                        app:backgroundTint="@android:color/white"
+                        android:textColor="#66BB6A"
+                        app:cornerRadius="20dp"
+                        android:layout_marginEnd="8dp" />
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/navChangeParkingButton"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CHANGE"
+                        android:textAllCaps="true"
+                        android:textStyle="bold"
+                        app:strokeColor="#66BB6A"
+                        app:strokeWidth="2dp"
+                        app:backgroundTint="@android:color/white"
+                        android:textColor="#66BB6A"
+                        app:cornerRadius="20dp" />
+
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/navModeToggleGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/transparent"
+                    app:singleSelection="true"
+                    app:selectionRequired="true"
+                    app:checkedButton="@id/btnModeWalk">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnModeWalk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="Walk"
+                        android:textAllCaps="false"
+                        android:textSize="14sp"
+                        android:insetLeft="12dp"
+                        android:insetRight="12dp"
+                        app:cornerRadius="20dp"
+                        app:backgroundTint="@color/map_mode_toggle_bg"
+                        android:textColor="@color/map_mode_toggle_text" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnModeCar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="Drive"
+                        android:textAllCaps="false"
+                        android:textSize="14sp"
+                        android:insetLeft="12dp"
+                        android:insetRight="12dp"
+                        app:cornerRadius="20dp"
+                        app:backgroundTint="@color/map_mode_toggle_bg"
+                        android:textColor="@color/map_mode_toggle_text"
+
+                        />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
 
 
 
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/navModeToggleGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:singleSelection="true">
+                <!-- Button row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="end">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnModeWalk"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Walk" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/navActionButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="START"
+                        android:textAllCaps="true"
+                        android:textStyle="bold"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="24dp"
+                        app:cornerRadius="20dp"
+                        app:backgroundTint="#66BB6A"
+                        android:textColor="@android:color/white"
+                        app:rippleColor="@android:color/white" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnModeCar"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Drive" />
-        </com.google.android.material.button.MaterialButtonToggleGroup>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-        <!-- Button row -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
 
-            <Button
-                android:id="@+id/navActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Navigate" />
-        </LinearLayout>
-    </LinearLayout>
 
-</FrameLayout>
+
+
+    </FrameLayout> <!-- closes mapContentContainer -->
+</LinearLayout>     <!-- closes root -->

@@ -1208,6 +1208,13 @@ class CampusMapFragment : Fragment(), OnMapReadyCallback {
         // Inflate the layout that contains the <fragment> SupportMapFragment
         val root = inflater.inflate(R.layout.fragment_campus_map, container, false)
 
+        // Wire up the blue header back button to behave like the system back
+        val backButton = root.findViewById<android.widget.ImageButton>(R.id.mapBackButton)
+        backButton?.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+
         // Locate the nested SupportMapFragment and request the async map
         // Child fragment manager because the map is nested inside this Fragment
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment

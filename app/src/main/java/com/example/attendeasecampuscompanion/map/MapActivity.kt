@@ -19,11 +19,8 @@ class MapActivity : AppCompatActivity() {
 
 
 
-        // Optional: show a back arrow in the top bar
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            title = getString(R.string.app_name) + " • Map"
-        }
+        // Hide default black action bar for the animated blue header
+        supportActionBar?.hide()
 
         // Insert the map fragment into this Activity's container (once)
         if (supportFragmentManager.findFragmentById(R.id.map_container) == null) {

@@ -3,10 +3,14 @@ local
 color black
 color error_red
 color light_gray
+color map_mode_toggle_bg
+color map_mode_toggle_text
 color primary_blue
 color purple_200
 color purple_500
 color purple_700
+color show_classes_thumb
+color show_classes_track
 color success_green
 color teal_200
 color teal_700
@@ -142,6 +146,10 @@ id locationSwitch
 id loginSubtitle
 id majorText
 id map
+id mapBackButton
+id mapContentContainer
+id mapHeaderContainer
+id mapTitle
 id map_container
 id messagingTitle
 id modeSelectionCard
@@ -203,6 +211,7 @@ id scannerTitle
 id scheduleContainer
 id scheduleDetails
 id scrollView
+id searchCard
 id searchInput
 id searchLayout
 id semesterDetails
