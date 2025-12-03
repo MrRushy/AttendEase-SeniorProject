@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:gravity="center_vertical"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackground">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/friendImage"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_profile_placeholder"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/primary_blue" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/friendName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friend Name"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/friendMajor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Computer Science"
+            android:textSize="13sp"
+            android:textColor="#666666" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@android:drawable/ic_menu_send"
+        app:tint="@color/primary_blue" />
+
+</LinearLayout>
