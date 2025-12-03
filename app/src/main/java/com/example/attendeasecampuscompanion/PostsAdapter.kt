@@ -1,5 +1,6 @@
 package com.example.attendeasecampuscompanion
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,8 @@ class PostsAdapter(
                     .load(post.userProfilePic)
                     .placeholder(R.drawable.ic_profile_placeholder)
                     .into(userImage)
+            } else {
+                userImage.setImageResource(R.drawable.ic_profile_placeholder)
             }
 
             if (post.likes.contains(currentUserId)) {
@@ -63,6 +66,17 @@ class PostsAdapter(
                 addFriendButton.visibility = View.VISIBLE
                 deletePostButton.visibility = View.GONE
             }
+
+            val profileClickListener = View.OnClickListener {
+                if (post.userId != currentUserId) {
+                    val intent = Intent(itemView.context, UserProfileActivity::class.java)
+                    intent.putExtra("userId", post.userId)
+                    itemView.context.startActivity(intent)
+                }
+            }
+
+            userImage.setOnClickListener(profileClickListener)
+            userName.setOnClickListener(profileClickListener)
 
             likeButton.setOnClickListener {
                 onLikeClick(post)
