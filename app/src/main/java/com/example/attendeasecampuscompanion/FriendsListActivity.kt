@@ -1,8 +1,11 @@
 package com.example.attendeasecampuscompanion
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,11 +16,13 @@ class FriendsListActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: FriendsAdapter
-    private lateinit var backButton: TextView
-    private lateinit var emptyText: TextView
 
+    private lateinit var backButton: TextView
+    private lateinit var friendsRecyclerView: RecyclerView
+    private lateinit var emptyState: LinearLayout
+    private lateinit var progressBar: ProgressBar
+
+    private lateinit var adapter: FriendsAdapter
     private val friendsList = mutableListOf<Friend>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,47 +32,78 @@ class FriendsListActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        backButton = findViewById(R.id.backButton)
-        recyclerView = findViewById(R.id.friendsRecyclerView)
-        emptyText = findViewById(R.id.emptyText)
-
-        adapter = FriendsAdapter(friendsList) { friend ->
-            Toast.makeText(this, "Clicked ${friend.friendName}", Toast.LENGTH_SHORT).show()
-        }
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
-
-        backButton.setOnClickListener {
-            finish()
-        }
-
+        initViews()
+        setupRecyclerView()
         loadFriends()
+    }
+
+    private fun initViews() {
+        backButton = findViewById(R.id.backButton)
+        friendsRecyclerView = findViewById(R.id.friendsRecyclerView)
+        emptyState = findViewById(R.id.emptyState)
+        progressBar = findViewById(R.id.progressBar)
+
+        backButton.setOnClickListener { finish() }
+    }
+
+    private fun setupRecyclerView() {
+        adapter = FriendsAdapter(
+            friendsList,
+            onFriendClick = { friend -> viewProfile(friend) },
+            onMessageClick = { friend -> openChat(friend) }
+        )
+
+        friendsRecyclerView.layoutManager = LinearLayoutManager(this)
+        friendsRecyclerView.adapter = adapter
     }
 
     private fun loadFriends() {
         val userId = auth.currentUser?.uid ?: return
 
+        progressBar.visibility = View.VISIBLE
+        emptyState.visibility = View.GONE
+        friendsRecyclerView.visibility = View.GONE
+
         db.collection("Users").document(userId).collection("Friends")
+            .whereEqualTo("status", "active")
             .get()
             .addOnSuccessListener { documents ->
+                progressBar.visibility = View.GONE
+
                 friendsList.clear()
                 for (doc in documents) {
                     val friend = doc.toObject(Friend::class.java)
                     friendsList.add(friend)
                 }
+
                 adapter.notifyDataSetChanged()
 
                 if (friendsList.isEmpty()) {
-                    emptyText.visibility = android.view.View.VISIBLE
-                    recyclerView.visibility = android.view.View.GONE
+                    emptyState.visibility = View.VISIBLE
+                    friendsRecyclerView.visibility = View.GONE
                 } else {
-                    emptyText.visibility = android.view.View.GONE
-                    recyclerView.visibility = android.view.View.VISIBLE
+                    emptyState.visibility = View.GONE
+                    friendsRecyclerView.visibility = View.VISIBLE
                 }
             }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error loading friends: ${e.message}", Toast.LENGTH_SHORT).show()
+            .addOnFailureListener {
+                progressBar.visibility = View.GONE
+                emptyState.visibility = View.VISIBLE
             }
+    }
+
+    private fun viewProfile(friend: Friend) {
+        val intent = Intent(this, UserProfileActivity::class.java)
+        intent.putExtra("userId", friend.friendId)
+        startActivity(intent)
+    }
+
+    private fun openChat(friend: Friend) {
+        val intent = Intent(this, ChatActivity::class.java).apply {
+            putExtra("otherUserId", friend.friendId)
+            putExtra("otherUserName", friend.friendName)
+            putExtra("otherUserPic", friend.friendProfilePic)
+        }
+        startActivity(intent)
     }
 }
