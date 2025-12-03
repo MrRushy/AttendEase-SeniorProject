@@ -135,6 +135,19 @@
             android:exported="false" />
 
         <activity
+            android:name=".ChatActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".NewChatActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".UserProfileActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".AttendanceSenderActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar">

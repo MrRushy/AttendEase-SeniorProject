@@ -158,6 +158,16 @@
             android:name="com.example.attendeasecampuscompanion.NotificationsActivity"
             android:exported="false" />
         <activity
+            android:name="com.example.attendeasecampuscompanion.ChatActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.example.attendeasecampuscompanion.NewChatActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.attendeasecampuscompanion.UserProfileActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.attendeasecampuscompanion.AttendanceSenderActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" >
