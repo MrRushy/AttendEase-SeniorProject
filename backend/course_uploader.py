@@ -6,7 +6,7 @@ from datetime import datetime
 from typing import Dict, Any
 
 #This would be different in actual use, since this is my own filepath for things to work
-CSV_FILE_PATH = r"C:\Users\bramc\Downloads\coursesNew.csv"
+CSV_FILE_PATH = r"C:\Users\bramc\Downloads\courseUploadExample.csv"
 SERVICE_ACCOUNT_KEY_PATH = r"C:\Users\bramc\Downloads\attendease-1004d-firebase-adminsdk-fbsvc-db016e4167.json"
 
 COLLECTION_NAME = 'Courses'
