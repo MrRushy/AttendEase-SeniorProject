@@ -58,6 +58,7 @@ class AttendanceSenderActivity : AppCompatActivity() {
 
     private var nfcTagData: String = ""
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attendance_sender)
@@ -85,12 +86,27 @@ class AttendanceSenderActivity : AppCompatActivity() {
             readerModeSection.visibility = View.VISIBLE
             hceModeSection.visibility = View.GONE
 
+            val callback = NfcAdapter.ReaderCallback { tag ->
+                onTagDiscovered(tag)
+            }
+
+            // Enable foreground dispatch to intercept NFC intents
+            nfcAdapter?.enableReaderMode(
+                this,
+                callback,
+                NfcAdapter.FLAG_READER_NFC_A or
+                        NfcAdapter.FLAG_READER_NFC_B,
+                null
+            )
+
         }
 
         hceModeButton = findViewById(R.id.hceModeButton)
         hceModeButton.setOnClickListener {
             readerModeSection.visibility = View.GONE
             hceModeSection.visibility = View.VISIBLE
+
+            nfcAdapter?.disableReaderMode(this)
 
         }
 
@@ -196,18 +212,18 @@ class AttendanceSenderActivity : AppCompatActivity() {
         super.onResume()
         statusText.text = "Ready to be scanned...\nRoom: $selectedRoom"
 
-        val callback = NfcAdapter.ReaderCallback { tag ->
-            onTagDiscovered(tag)
-        }
-
-        // Enable foreground dispatch to intercept NFC intents
-        nfcAdapter?.enableReaderMode(
-            this,
-            callback,
-            NfcAdapter.FLAG_READER_NFC_A or
-                    NfcAdapter.FLAG_READER_NFC_B,
-            null
-        )
+//        val callback = NfcAdapter.ReaderCallback { tag ->
+//            onTagDiscovered(tag)
+//        }
+//
+//        // Enable foreground dispatch to intercept NFC intents
+//        nfcAdapter?.enableReaderMode(
+//            this,
+//            callback,
+//            NfcAdapter.FLAG_READER_NFC_A or
+//                    NfcAdapter.FLAG_READER_NFC_B,
+//            null
+//        )
     }
 
 
