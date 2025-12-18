@@ -394,10 +394,10 @@ class MyScheduleActivity : AppCompatActivity() {
             val displayHour = if (hour == 0) 12 else if (hour > 12) hour - 12 else hour
             val amPm = if (hour < 12) "AM" else "PM"
             timeText.text = String.format("%d %s", displayHour, amPm)
-            timeText.gravity = Gravity.CENTER_VERTICAL or Gravity.END
+            timeText.gravity = Gravity.TOP or Gravity.END
             timeText.textSize = 10f
             timeText.setTextColor(Color.GRAY)
-            timeText.setPadding(0, 0, 8, 0)
+            timeText.setPadding(0, 8, 8, 0)
             val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, hourHeightPx)
             timeText.layoutParams = params
             timeColumn.addView(timeText)
