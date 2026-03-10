@@ -6,7 +6,7 @@ For this team-based senior project, I developed the interactive campus map featu
 - Shortest-path routing (Dijkstra) over custom node/edge structures
 - Navigation refinements such as rerouting, location interaction, and camera behavior
 
-### Demo (Map Feature)
+### Demo (Map Feature) Click the picture to view a demo
 [![AttendEase Map Demo](assets/map-demoTN.png)](assets/attendease-map-demo.mp4)
 
 ### Key Files (Map Feature)
