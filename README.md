@@ -9,6 +9,10 @@ For this team-based senior project, I developed the interactive campus map featu
 ### Demo (Map Feature) Click the picture to view a demo
 [![AttendEase Map Demo](assets/map-demoTN.png)](assets/attendease-map-demo.mp4)
 
+[Watch the map demo video](assets/attendease-map-demo.mp4)
+
+Demo shows route preview + navigation behavior for NYIT campus locations.
+
 ### Key Files (Map Feature)
 - [CampusMapFragment.kt](https://github.com/MrRushy/AttendEase-SeniorProject/blob/master/app/src/main/java/com/example/attendeasecampuscompanion/map/CampusMapFragment.kt) — main map UI/interaction logic  
 - [MapActivity.kt](https://github.com/MrRushy/AttendEase-SeniorProject/blob/master/app/src/main/java/com/example/attendeasecampuscompanion/map/MapActivity.kt) — map activity entry and coordination  
