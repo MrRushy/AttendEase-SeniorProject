@@ -1,3 +1,26 @@
+## My Contribution (Rushil Shanmugam)
+For this team-based senior project, I developed the interactive campus map feature, including:
+- Custom building and course-location markers
+- Search behavior and route preview
+- Graph-based campus navigation using OpenStreetMap-derived paths
+- Shortest-path routing (Dijkstra) over custom node/edge structures
+- Navigation refinements such as rerouting, location interaction, and camera behavior
+
+### Demo (Map Feature)
+[![AttendEase Map Demo](assets/map-demoTN.png)](assets/attendease-map-demo.mp4)
+
+### Key Files (Map Feature)
+- [CampusMapFragment.kt](https://github.com/MrRushy/AttendEase-SeniorProject/blob/master/app/src/main/java/com/example/attendeasecampuscompanion/map/CampusMapFragment.kt) — main map UI/interaction logic  
+- [MapActivity.kt](https://github.com/MrRushy/AttendEase-SeniorProject/blob/master/app/src/main/java/com/example/attendeasecampuscompanion/map/MapActivity.kt) — map activity entry and coordination  
+- [CampusGraph.kt](https://github.com/MrRushy/AttendEase-SeniorProject/blob/master/app/src/main/java/com/example/attendeasecampuscompanion/map/CampusGraph.kt) — campus graph + routing/path logic  
+- [ClassBuildingLocation.kt](https://github.com/MrRushy/AttendEase-SeniorProject/blob/master/app/src/main/java/com/example/attendeasecampuscompanion/map/ClassBuildingLocation.kt) — course/building location mapping support  
+
+### Supporting Notes
+- Map integration points (e.g., navigation from other screens into the map) were team-owned and involved collaboration across the codebase.
+- A small Python script was used during development to pull/transform path data, but it is not included in this repo because the processed data is already stored within the project.
+
+
+
 # AttendEase - Campus Companion
 
 AttendEase is a mobile attendance and campus life application for Android built with Kotlin. Designed for university environments, AttendEase streamlines attendance tracking, course management, and student-professor interactions through a unified platform.
