@@ -1,3 +1,5 @@
+> Fork of the team repository. The section below highlights my contributions (campus map + routing).
+
 ## My Contribution (Rushil Shanmugam)
 For this team-based senior project, I developed the interactive campus map feature, including:
 - Custom building and course-location markers
@@ -18,6 +20,7 @@ Demo shows route preview + navigation behavior for NYIT campus locations.
 - [MapActivity.kt](https://github.com/MrRushy/AttendEase-SeniorProject/blob/master/app/src/main/java/com/example/attendeasecampuscompanion/map/MapActivity.kt) — map activity entry and coordination  
 - [CampusGraph.kt](https://github.com/MrRushy/AttendEase-SeniorProject/blob/master/app/src/main/java/com/example/attendeasecampuscompanion/map/CampusGraph.kt) — campus graph + routing/path logic  
 - [ClassBuildingLocation.kt](https://github.com/MrRushy/AttendEase-SeniorProject/blob/master/app/src/main/java/com/example/attendeasecampuscompanion/map/ClassBuildingLocation.kt) — course/building location mapping support  
+**Map Tech:** Kotlin, Google Maps SDK, OpenStreetMap data, graph routing (Dijkstra)
 
 ### Supporting Notes
 - Map integration points (e.g., navigation from other screens into the map) were team-owned and involved collaboration across the codebase.
